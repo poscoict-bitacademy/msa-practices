@@ -9,7 +9,7 @@ spring:
 #
 spring:
    application:
-      name: service-registry-server(eureka)
+      name: service-registry-server
    config:
       activate:
          on-profile: development
@@ -28,6 +28,33 @@ eureka:
       registerWithEureka: false
       serviceUrl:
          defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka
+
+---
+#
+# production configuration
+#
+spring:
+   application:
+      name: service-registry-server
+   config:
+      activate:
+         on-profile: production
+
+server:
+   port: 8761
+   
+eureka:
+   instance:
+      hostname: 192.168.0.51
+   server:
+      enableSelfPreservation: false
+      waitTimeInMsWhenSyncEmpty: 5        
+   client:
+      fetchRegistry: false
+      registerWithEureka: false
+      serviceUrl:
+         defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka
+         
 
 
          
