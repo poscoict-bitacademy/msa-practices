@@ -3,6 +3,7 @@ spring:
       name: service-emaillist
    profiles:
       active: development
+      
 server:
    port: 0
    servlet:
