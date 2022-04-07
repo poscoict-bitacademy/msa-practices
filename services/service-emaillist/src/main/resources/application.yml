@@ -3,7 +3,6 @@ spring:
       name: service-emaillist
    profiles:
       active: development
-
 server:
    port: 0
    servlet:
@@ -37,7 +36,11 @@ eureka:
       registerWithEureka: true
       serviceUrl:
          defaultZone: http://localhost:8761/eureka
-         
+logging:
+   pattern:
+      console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n"
+   level:
+      root: INFO         
 
 ---
 spring:
@@ -48,11 +51,9 @@ spring:
       driver-class-name: org.mariadb.jdbc.Driver
       url: jdbc:mysql://192.168.0.51:3307/webdb?characterEncoding=utf8
       username: webdb
-      password: webdb   
-
+      password: webdb
 mybatis:
-   config-location: classpath:mybatis/configuration.xml
-            
+   config-location: classpath:mybatis/configuration.xml            
 eureka:
    instance:
       preferIpAddress: true
@@ -60,4 +61,22 @@ eureka:
       fetchRegistry: true
       registerWithEureka: true
       serviceUrl:
-         defaultZone: http://192.168.0.51:8761/eureka                
+         defaultZone: http://192.168.0.51:8761/eureka
+logging:
+   pattern:
+      file: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n"
+   logback:
+      rollingpolicy:
+         file-name-pattern: "logs/${spring.application.name}.%d{yyyy-MM-dd}.%i.log.zip"
+         max-file-size: 10MB
+         max-history: 10
+   file:
+      name: logs/${spring.application.name}.log
+   level:
+      root: WARN
+      me:
+         kickscar:
+            msa:
+               service:
+                  emaillist:
+                     exception: ERROR                         
