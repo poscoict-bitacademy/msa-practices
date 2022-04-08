@@ -2,7 +2,6 @@ package me.kickscar.mysite.controller;
 
 import me.kickscar.mysite.dto.JsonResult;
 import me.kickscar.mysite.vo.GalleryVo;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
@@ -21,13 +20,13 @@ public class GalleryController {
 
 	private final RestTemplate restTemplate;
 
-	public GalleryController(@LoadBalanced RestTemplate restTemplate) {
+	public GalleryController(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
 	}
 
 	@GetMapping("")
 	public ResponseEntity<?> readAll() {
-		GalleryVo[] response = restTemplate.getForObject("http://service-gallery/api", GalleryVo[].class);
+		GalleryVo[] response = restTemplate.getForObject("http://localhost:5555/gallery/api", GalleryVo[].class);
 		return ResponseEntity.status(HttpStatus.OK).body(JsonResult.success(Arrays.asList(response)));
 	}
 	
@@ -55,10 +54,10 @@ public class GalleryController {
 
 			// Multipart Request
 			HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-			Map<String, String> responseUpload = restTemplate.postForObject("http://service-storage/api", requestEntity, HashMap.class);
+			Map<String, String> responseUpload = restTemplate.postForObject("http://localhost:5555/storage/api", requestEntity, HashMap.class);
 
 			galleryVo.setUrl(responseUpload.get("url"));
-			response = restTemplate.postForObject("http://service-gallery/api", galleryVo, GalleryVo.class);
+			response = restTemplate.postForObject("http://localhost:5555/gallery/api", galleryVo, GalleryVo.class);
 		} catch(Exception ex) {
 			throw new RuntimeException(ex);
 		}
@@ -68,7 +67,7 @@ public class GalleryController {
 	
 	@DeleteMapping(value="/{no}")
 	public ResponseEntity<?> delete(@PathVariable("no") Long no) {
-		restTemplate.delete("http://service-gallery/api/" + no);
+		restTemplate.delete("http://localhost:5555/gallery/api/" + no);
 		return ResponseEntity.status(HttpStatus.OK).body(JsonResult.success(Map.of("no", no)));
 	}
 }

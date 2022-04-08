@@ -29,8 +29,9 @@ public class ApiController {
 		return ResponseEntity.status(HttpStatus.OK).body(vo);
 	}
 
-	@DeleteMapping("/{no}")
+	@PostMapping("/{no}")
 	public ResponseEntity<?> delete(@PathVariable("no") Long no, @RequestParam(value="password", required=true, defaultValue="") String password) {
+		System.out.println("---->" + no + ":" + password);
 		Boolean result = guestbookService.deleteMessage(no, password);		
 		return ResponseEntity.status(HttpStatus.OK).body(Map.of("no", result ? no : null));
 	}
