@@ -1,6 +1,6 @@
 spring:
    application:
-      name: emaillist
+      name: mysite
    profiles:
       active: development
    mvc:
@@ -15,14 +15,11 @@ spring:
       mode: HTML
       suffix : .html
       cache : false
-
-# GW 사용      
-#eureka:
-#   client:
-#      fetchRegistry: true
-#      registerWithEureka: false
-#      serviceUrl:
-#         defaultZone: http://localhost:8761/eureka
+   servlet:
+      multipart:
+         enabled: true
+         max-file-size: 20MB
+         max-request-size: 100MB
          
 
 ---
@@ -35,7 +32,7 @@ spring:
          on-profile: development
    devtools:
       livereload:
-         enabled: true         
+         enabled: true
 server:
    port: 8080
    servlet:
@@ -43,11 +40,19 @@ server:
       encoding:
          charset: UTF-8
          enabled: true
+eureka:
+   client:
+      fetchRegistry: true
+      registerWithEureka: false
+      serviceUrl:
+         defaultZone: http://localhost:8761/eureka
 logging:
    pattern:
       console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n"
    level:
-      root: INFO  
+      root: INFO
+
+
 
 ---
 #
@@ -56,14 +61,20 @@ logging:
 spring:
    config:
       activate:
-         on-profile: production
+         on-profile: production             
 server:
-   port: 8882
+   port: 8883
    servlet:
       context-path: /
       encoding:
          charset: UTF-8
          enabled: true
+eureka:
+   client:
+      fetchRegistry: true
+      registerWithEureka: false
+      serviceUrl:
+         defaultZone: http://49.247.9.194:8761/eureka
 logging:
    pattern:
       file: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n"
@@ -78,5 +89,5 @@ logging:
       root: WARN
       me:
          kickscar:
-            emaillist:
-               exception: ERROR 
+            mysite:
+               exception: ERROR
